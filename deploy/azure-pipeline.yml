@@ -1,0 +1,18 @@
+trigger:
+  branches:
+    include:
+      - master
+parameters:
+  - name: environment
+    type: string
+    values:
+      - nonprod
+      - prod
+stages:
+  - template: stages.yml
+    parameters:
+      environments:
+        - name: "${{ parameters.environment }}_stage"
+          environment: "${{ parameters.environment }}"
+          connectedService: "Service Connection Name "
+          location: "$(pipeline_location)"
