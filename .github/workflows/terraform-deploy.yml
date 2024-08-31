@@ -26,6 +26,9 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+    - name: 'Change Directory'
+      run: cd templates
+
     - name: Terraform Init
       run: terraform init
 
