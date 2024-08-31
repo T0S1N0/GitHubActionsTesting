@@ -26,8 +26,9 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: 'Change Directory'
-      run: cd ..\templates
+    - name: 'Change Directory to Templates'
+      working-directory: templates
+      run: echo "Changed directory to templates/"
 
     - name: Terraform Init
       run: terraform init
