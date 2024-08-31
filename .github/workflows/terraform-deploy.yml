@@ -3,10 +3,10 @@ name: 'Terraform Deployment'
 on:
   push:
     branches:
-      - main  # Deploys on push to the main branch
+      - main 
   pull_request:
     branches:
-      - main  # Optional: Runs Terraform plan on PRs to the main branch
+      - main  
 
 jobs:
   terraform:

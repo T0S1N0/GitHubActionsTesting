@@ -1,41 +1,27 @@
 # Configure the Azure Provider
+# provider.tf
 terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
       version = "~> 4.0.1"
     }
-    azuread = {
-      source  = "hashicorp/azuread"
-      version = "~> 2.53.1"
-    }
-    azapi = {
-      source  = "Azure/azapi"
-      version = "~> 1.15.0"
-    }
   }
+
+  required_version = ">= 1.0.0"
 }
 
 provider "azurerm" {
-  subscription_id = var.subscription_id
-  client_id       = var.client_id
-  client_secret   = var.client_secret
-  tenant_id       = var.tenant_id
   features {}
+
+  # The following fields are optional and can be provided as environment variables or through GitHub secrets.
+  # If you're using GitHub Actions, these values will be automatically picked up from the environment.
+  client_id       = var.client_id       # Environment variable ARM_CLIENT_ID
+  client_secret   = var.client_secret   # Environment variable ARM_CLIENT_SECRET
+  subscription_id = var.subscription_id # Environment variable ARM_SUBSCRIPTION_ID
+  tenant_id       = var.tenant_id       # Environment variable ARM_TENANT_ID
 }
 
-provider "azuread" {
-  client_id       = var.client_id
-  client_secret   = var.client_secret
-  tenant_id       = var.tenant_id
-}
-
-provider "azapi" {
-  subscription_id = var.subscription_id
-  client_id       = var.client_id
-  client_secret   = var.client_secret
-  tenant_id       = var.tenant_id
-}
 
 
 terraform {
@@ -46,9 +32,3 @@ terraform {
     key                  = "terraform-ghactions.tfstate"
   }
 }
-
-# provider "azurerm" {
-#   alias           = "deployment_subscription"
-#   subscription_id = "__deployment_subscription__"
-#   features {}
-# }
