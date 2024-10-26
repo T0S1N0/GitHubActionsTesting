@@ -13,9 +13,6 @@ terraform {
 
 provider "azurerm" {
   features {}
-
-  # The following fields are optional and can be provided as environment variables or through GitHub secrets.
-  # If you're using GitHub Actions, these values will be automatically picked up from the environment.
   client_id       = var.client_id       # Environment variable ARM_CLIENT_ID
   client_secret   = var.client_secret   # Environment variable ARM_CLIENT_SECRET
   subscription_id = var.subscription_id # Environment variable ARM_SUBSCRIPTION_ID

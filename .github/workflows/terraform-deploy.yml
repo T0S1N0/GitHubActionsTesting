@@ -30,12 +30,28 @@ jobs:
       working-directory: templates
       run: echo "Changed directory to templates/"
 
+    - name: 'List files in templates'
+      working-directory: templates
+      run: ls -la
+
     - name: Terraform Init
-      run: terraform init
+      working-directory: templates
+      env:
+        ARM_CLIENT_ID: "${{ secrets.AZURE_CREDENTIALS.CLIENT_ID }}"
+        ARM_CLIENT_SECRET: "${{ secrets.AZURE_CREDENTIALS.CLIENT_SECRET }}"
+        ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_CREDENTIALS.SUBSCRIPTION_ID }}"
+        ARM_TENANT_ID: "${{ secrets.AZURE_CREDENTIALS.TENANT_ID }}"
+      run: terraform plan -var "client_id=$ARM_CLIENT_ID" \
+        -var "client_secret=$ARM_CLIENT_SECRET" \
+        -var "subscription_id=$ARM_SUBSCRIPTION_ID" \
+        -var "tenant_id=$ARM_TENANT_ID" \
+        -out=tfplan
 
     - name: Terraform Plan
+      working-directory: templates
       run: terraform plan -out=tfplan
 
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main'
+      working-directory: templates
       run: terraform apply -auto-approve tfplan
