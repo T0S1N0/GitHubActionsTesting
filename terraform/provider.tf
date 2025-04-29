@@ -23,8 +23,8 @@ provider "azurerm" {
 
 terraform {
   backend "azurerm" {
-    resource_group_name  = "rg-terraform-github-actions-state"
-    storage_account_name = "terraformgithubactions01 "
+    resource_group_name  = "rg-config-test-es-001"
+    storage_account_name = "stconfigtestes001"
     container_name       = "tfstates"
     key                  = "terraform-ghactions.tfstate"
   }
