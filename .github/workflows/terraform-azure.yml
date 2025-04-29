@@ -15,35 +15,34 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Paso 2: Configuración de Terraform
+      # Paso 2: Listar archivos en el directorio actual (para depuración)
+      - name: List files in current directory
+        run: ls -la
+
+      # Paso 3: Configuración de Terraform
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.5.0
 
-      # Paso 3: Autenticación en Azure
+      # Paso 4: Autenticación en Azure
       - name: Azure Login
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # Paso 4: Cambiar al directorio de Terraform (si es necesario)
-      # Si los archivos .tf están en una subcarpeta llamada 'terraform', habilita este paso
-      - name: Change to Terraform directory
-        run: cd terraform
-
-      # Paso 5: Inicializar Terraform
+      # Paso 5: Inicializar Terraform (si los archivos están en un subdirectorio, usa -chdir)
       - name: Initialize Terraform
-        run: terraform init
+        run: terraform -chdir=terraform init
 
       # Paso 6: Validar el código de Terraform
       - name: Validate Terraform
-        run: terraform validate
+        run: terraform -chdir=terraform validate
 
       # Paso 7: Planificar los cambios
       - name: Terraform Plan
-        run: terraform plan -out=tfplan
+        run: terraform -chdir=terraform plan -out=tfplan
 
       # Paso 8: Aplicar los cambios
       - name: Terraform Apply
-        run: terraform apply -input=false tfplan
+        run: terraform -chdir=terraform apply -input=false tfplan
