@@ -27,18 +27,23 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # Paso 4: Inicializar Terraform
+      # Paso 4: Cambiar al directorio de Terraform (si es necesario)
+      # Si los archivos .tf están en una subcarpeta llamada 'terraform', habilita este paso
+      - name: Change to Terraform directory
+        run: cd terraform
+
+      # Paso 5: Inicializar Terraform
       - name: Initialize Terraform
         run: terraform init
 
-      # Paso 5: Validar el código de Terraform
+      # Paso 6: Validar el código de Terraform
       - name: Validate Terraform
         run: terraform validate
 
-      # Paso 6: Planificar los cambios
+      # Paso 7: Planificar los cambios
       - name: Terraform Plan
         run: terraform plan -out=tfplan
 
-      # Paso 7: Aplicar los cambios
+      # Paso 8: Aplicar los cambios
       - name: Terraform Apply
         run: terraform apply -input=false tfplan
