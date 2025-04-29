@@ -13,13 +13,11 @@ terraform {
 
 provider "azurerm" {
   features {}
-  client_id       = var.client_id       # Environment variable ARM_CLIENT_ID
-  client_secret   = var.client_secret   # Environment variable ARM_CLIENT_SECRET
-  subscription_id = var.subscription_id # Environment variable ARM_SUBSCRIPTION_ID
-  tenant_id       = var.tenant_id       # Environment variable ARM_TENANT_ID
+  client_id       = var.client_id       # Environment secret ARM_CLIENT_ID
+  client_secret   = var.client_secret   # Environment secret ARM_CLIENT_SECRET
+  subscription_id = var.subscription_id # Environment secret ARM_SUBSCRIPTION_ID
+  tenant_id       = var.tenant_id       # Environment secret ARM_TENANT_ID
 }
-
-
 
 terraform {
   backend "azurerm" {

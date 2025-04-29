@@ -1,0 +1,47 @@
+name: Deploy Terraform to Azure
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  terraform:
+    name: Deploy Terraform
+    runs-on: ubuntu-latest
+
+    steps:
+      # Paso 1: Checkout del código
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Paso 2: Configuración de Terraform
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.0
+
+      # Paso 3: Autenticación en Azure
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.ARM_CLIENT_ID }}
+          tenant-id: ${{ secrets.ARM_TENANT_ID }}
+          client-secret: ${{ secrets.ARM_CLIENT_SECRET }}
+          subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+
+      # Paso 4: Inicializar Terraform
+      - name: Initialize Terraform
+        run: terraform init
+
+      # Paso 5: Validar el código de Terraform
+      - name: Validate Terraform
+        run: terraform validate
+
+      # Paso 6: Planificar los cambios
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+
+      # Paso 7: Aplicar los cambios
+      - name: Terraform Apply
+        run: terraform apply -input=false tfplan
